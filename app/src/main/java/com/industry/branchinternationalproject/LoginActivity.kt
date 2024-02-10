@@ -26,12 +26,13 @@ class LoginActivity : AppCompatActivity() {
 
             val loginRequest = LoginRequest(username, password)
 
-            //Handle Error messages
+            // Handle Error messages
             apiService.login(loginRequest).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {
                         val authToken = response.body()?.auth_token
                         // Save authToken to SharedPreferences or ViewModel, etc.
+                        saveAuthToken(authToken) // Call function to save authToken
                         Toast.makeText(this@LoginActivity,"Login successful", Toast.LENGTH_SHORT).show()
                     } else {
                         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
@@ -44,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
         }
+
     }
 
     //Save Authentication Token
